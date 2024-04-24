@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'war'
 }
 
 group = 'com.weather'
@@ -10,10 +11,23 @@ repositories {
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'org.springframework:spring-webmvc:6.1.6'
+//    providedCompile 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    implementation 'org.apache.tomcat:tomcat-api:10.1.19'
+
+    implementation 'org.projectlombok:lombok:1.18.28'
+
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
-test {
+tasks.named('test') {
     useJUnitPlatform()
 }
