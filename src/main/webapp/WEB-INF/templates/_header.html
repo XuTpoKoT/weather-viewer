@@ -7,12 +7,12 @@
             <div class="col d-flex">
                 <div th:replace="~{_search}"></div>
             </div>
-            <div class="col d-flex justify-content-end" th:unless="${isAuthorised}">
+            <div class="col d-flex justify-content-end" th:unless="${param.login}">
                 <a class="btn btn-outline-primary px-3" role="button" th:href="@{/sign-in}">Sign in</a>
                 <a class="btn btn-primary px-3 ms-2" role="button" th:href="@{/sign-up}">Sign up</a>
             </div>
-            <div class="col d-flex justify-content-end align-items-center" th:if="${isAuthorised}">
-                <span th:text="${login}">username</span>
+            <div class="col d-flex justify-content-end align-items-center" th:if="${param.login}">
+                Hi, <span th:text="${param.login}">username</span>
                 <form method="post" th:action="@{/sign-out}">
                     <button class="btn btn-outline-primary px-3 ms-4" type="submit">Sign out</button>
                 </form>

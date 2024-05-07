@@ -23,22 +23,29 @@ repositories {
 
 ext {
     lombokVersion = '1.18.28'
+    log4jVersion = '2.23.1'
 }
 dependencies {
+    // web
     implementation 'org.springframework:spring-webmvc:6.1.6'
     implementation 'org.apache.tomcat:tomcat-api:10.1.19'
     implementation 'org.thymeleaf:thymeleaf-spring6:3.1.2.RELEASE'
     implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
 
-    implementation 'com.password4j:password4j:1.8.1'
-    implementation "org.projectlombok:lombok:$lombokVersion"
-
+    // db
     implementation 'org.springframework.data:spring-data-jpa:3.2.5'
     implementation 'org.hibernate.orm:hibernate-core:6.1.7.Final'
     implementation 'org.postgresql:postgresql:42.7.2'
-    // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
     implementation 'com.zaxxer:HikariCP:5.1.0'
 
+    implementation 'com.password4j:password4j:1.8.1'
+    implementation "org.projectlombok:lombok:$lombokVersion"
+
+    implementation 'org.slf4j:slf4j-api:2.0.13'
+    // Bridge between SLF4J and Log4j2
+    implementation "org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion"
+    implementation "org.apache.logging.log4j:log4j-api:$log4jVersion"
+    implementation "org.apache.logging.log4j:log4j-core:$log4jVersion"
 
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 

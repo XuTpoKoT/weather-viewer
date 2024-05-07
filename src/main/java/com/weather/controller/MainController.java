@@ -1,20 +1,18 @@
 package com.weather.controller;
 
-import lombok.extern.java.Log;
+import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/")
-@Log
+@Slf4j
 public class MainController {
     @GetMapping
-    public String getMainPage(Model model) {
-        log.info("getMainPage called");
-        boolean isAuthorised = false;
-        model.addAttribute(isAuthorised);
+    public String getMainPage(HttpSession session) {
+        log.info("getMainPage called with session id " + session.getAttribute("sessionId"));
         return "home";
     }
 }

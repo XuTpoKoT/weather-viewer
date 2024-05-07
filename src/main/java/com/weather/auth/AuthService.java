@@ -2,15 +2,17 @@ package com.weather.auth;
 
 import com.password4j.Hash;
 import com.password4j.Password;
+import com.weather.error.DBException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Log
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -30,9 +32,32 @@ public class AuthService {
             log.info("Session " + session.getId() + " created");
 
             return session.getId();
+        } catch (DataIntegrityViolationException e) {
+            throw new SignUpFailedException("Login " + login + " is occupied");
         } catch (RuntimeException e) {
-            throw new SignUpFailedException();
+            throw new DBException(e);
         }
+    }
 
+    @Transactional
+    public UUID signIn(String login, String password) {
+        try {
+            User user = userRepo.findByLogin(login).orElseThrow(BadCredentialsException::new);
+            if (!Password.check(password, user.getPassword()).withBcrypt()) {
+                throw new BadCredentialsException();
+            }
+
+            Session session = new Session(user, LocalDateTime.now().plusHours(1));
+            sessionRepo.save(session);
+            log.info("Session " + session.getId() + " created");
+
+            return session.getId();
+        } catch (RuntimeException e) {
+            throw new DBException(e);
+        }
+    }
+
+    public void signOut(UUID sessionId) {
+        sessionRepo.deleteById(sessionId);
     }
 }
