@@ -24,6 +24,7 @@ repositories {
 ext {
     lombokVersion = '1.18.28'
     log4jVersion = '2.23.1'
+    mapstructVersion = '1.5.5.Final'
 }
 dependencies {
     // web
@@ -38,16 +39,19 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.7.2'
     implementation 'com.zaxxer:HikariCP:5.1.0'
 
-    implementation 'com.password4j:password4j:1.8.1'
-    implementation "org.projectlombok:lombok:$lombokVersion"
-
+    // logging
     implementation 'org.slf4j:slf4j-api:2.0.13'
-    // Bridge between SLF4J and Log4j2
-    implementation "org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion"
+    implementation "org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion" // Bridge between SLF4J and Log4j2
     implementation "org.apache.logging.log4j:log4j-api:$log4jVersion"
     implementation "org.apache.logging.log4j:log4j-core:$log4jVersion"
 
+    implementation 'com.password4j:password4j:1.8.1'
+    implementation "org.projectlombok:lombok:$lombokVersion"
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
+    implementation "org.mapstruct:mapstruct:$mapstructVersion"
+
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
