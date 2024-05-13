@@ -18,7 +18,7 @@
         <div class="row">
             <div class="card m-2" style="width: 30rem" th:each="item : ${locationWeatherMap}">
                 <div class="card-body">
-<!--                    удаление-->
+                    <!--удаление-->
                     <div class="container">
                         <div class="row">
                             <div class="col-10">
@@ -39,7 +39,7 @@
                                         </svg>
                                     </button>
                                     <div class="dropdown-menu">
-                                        <form th:method="delete">
+                                        <form th:method="delete" th:action="@{/locations}">
                                             <input name="locationId" th:value="${item.key.id}" type="hidden">
                                             <button class="dropdown-item" type="submit">Delete</button>
                                         </form>
