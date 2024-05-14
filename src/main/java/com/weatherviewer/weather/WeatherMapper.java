@@ -32,8 +32,8 @@ public interface WeatherMapper {
     @Mapping(target = "time", source = "dateTime", qualifiedByName = "time")
     @Mapping(target = "timeOfDay", source = "dateTime", qualifiedByName = "timeOfDay")
     @Mapping(target = "temperature", source = "main.temperature")
-    HourlyForecastResponse getHourlyForecast(ForecastApiResponse.HourlyForecast hourlyForecast);
-    List<HourlyForecastResponse> getHourlyForecasts(List<ForecastApiResponse.HourlyForecast> hourlyForecasts);
+    ForecastForHour getHourlyForecast(ForecastApiResponse.HourlyForecast hourlyForecast);
+    List<ForecastForHour> getHourlyForecast(List<ForecastApiResponse.HourlyForecast> hourlyForecasts);
 
 
     @Named("description")

@@ -1,7 +1,9 @@
 package com.weatherviewer.config;
 
+import com.weatherviewer.auth.AuthenticationFilter;
 import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring6.ISpringTemplateEngine;
@@ -17,6 +19,18 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @ComponentScan({"com.weatherviewer"})
 @PropertySource("classpath:application.properties")
 public class WebConfig implements WebMvcConfigurer {
+    private final AuthenticationFilter authenticationFilter;
+
+    public WebConfig(AuthenticationFilter authenticationFilter) {
+        this.authenticationFilter = authenticationFilter;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authenticationFilter)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/", "/img/*", "/WEB-INF/**", "/sign-in", "sign-up");
+    }
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();

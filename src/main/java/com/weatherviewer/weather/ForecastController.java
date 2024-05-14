@@ -26,6 +26,7 @@ public class ForecastController {
     private final WeatherApiService weatherApiService;
     private final LocationRepo locationRepo;
     private final WeatherMapper weatherMapper = Mappers.getMapper(WeatherMapper.class);
+    private final DailyForecastMapper dailyForecastMapper = new DailyForecastMapper();
     @GetMapping
     public String getForecast(HttpSession session, @RequestParam("locationId") UUID locationId, Model model) {
         log.info("getForecast called with session id " + session.getAttribute("sessionId"));
@@ -34,10 +35,12 @@ public class ForecastController {
                 .orElseThrow(() -> new LocationNotFoundException("Location: " + locationId + " is not found"));
 
         ForecastApiResponse forecastForLocation = weatherApiService.getForecastForLocation(location);
-        List<HourlyForecastResponse> hourlyForecast = weatherMapper.getHourlyForecasts(forecastForLocation.getForecasts());
+        List<ForecastForHour> hourlyForecast = weatherMapper.getHourlyForecast(forecastForLocation.getForecasts());
+        List<ForecastForDay> dailyForecast = dailyForecastMapper.getDailyForecast(forecastForLocation.getForecasts());
 
-        model.addAttribute("hourlyForecast", hourlyForecast);
         model.addAttribute("locationName", location.getName());
+        model.addAttribute("hourlyForecast", hourlyForecast);
+        model.addAttribute("dailyForecast", dailyForecast);
 
         return "forecast";
     }

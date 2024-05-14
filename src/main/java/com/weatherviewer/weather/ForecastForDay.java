@@ -2,14 +2,13 @@ package com.weatherviewer.weather;
 
 import lombok.Builder;
 
-import java.time.LocalTime;
+import java.time.LocalDate;
 
 
 @Builder
-public record HourlyForecastResponse(
+public record ForecastForDay(
     WeatherCondition weatherCondition,
     TimeOfDay timeOfDay,
-    String description,
     Double temperature,
-    LocalTime time) {
+    LocalDate date) {
 }
