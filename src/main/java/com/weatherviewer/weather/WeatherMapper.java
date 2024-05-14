@@ -22,7 +22,6 @@ public interface WeatherMapper {
     @Mapping(target = "windDirection", source = "wind.deg")
     @Mapping(target = "windGust", source = "wind.gust")
     @Mapping(target = "cloudiness", source = "clouds.cloudiness")
-    @Mapping(target = "curTime", source = "dateTime", qualifiedByName = "time")
     @Mapping(target = "sunrise", source = "sys", qualifiedByName = "sunrise")
     @Mapping(target = "sunset", source = "sys", qualifiedByName = "sunset")
     WeatherResponse fromWeatherApiResponse(WeatherApiResponse weatherApiResponse);

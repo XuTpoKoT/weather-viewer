@@ -20,7 +20,6 @@ public record WeatherResponse(
     Integer windDirection,
     Double windGust,
     Integer cloudiness,
-    LocalTime curTime,
     LocalTime sunrise,
     LocalTime sunset) {
 }
