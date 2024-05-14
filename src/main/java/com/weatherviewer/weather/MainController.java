@@ -24,7 +24,7 @@ import java.util.Map;
 public class MainController {
     private final LocationRepo locationRepo;
     private final WeatherApiService weatherApiService;
-    private final WeatherResponseMapper weatherResponseMapper = Mappers.getMapper(WeatherResponseMapper.class);
+    private final WeatherMapper weatherMapper = Mappers.getMapper(WeatherMapper.class);
     @GetMapping
     public String getMainPage(HttpSession session, Model model) {
         log.info("getMainPage called with session id " + session.getAttribute("sessionId"));
@@ -38,7 +38,7 @@ public class MainController {
 
             for (Location location : userLocations) {
                 WeatherApiResponse weatherApiResponse = weatherApiService.getWeatherForLocation(location);
-                locationWeatherMap.put(location, weatherResponseMapper.fromWeatherApiResponse(weatherApiResponse));
+                locationWeatherMap.put(location, weatherMapper.fromWeatherApiResponse(weatherApiResponse));
             }
 
             model.addAttribute("locationWeatherMap", locationWeatherMap);

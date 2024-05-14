@@ -1,5 +1,6 @@
 package com.weatherviewer.weather;
 
+import com.weatherviewer.weatherapi.ForecastApiResponse;
 import com.weatherviewer.weatherapi.Weather;
 import com.weatherviewer.weatherapi.WeatherApiResponse;
 import org.mapstruct.Mapper;
@@ -11,7 +12,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Mapper
-public interface WeatherResponseMapper {
+public interface WeatherMapper {
 
     @Mapping(target = ".", source = "main")
     @Mapping(target = "description", source = "weatherList", qualifiedByName = "description")
@@ -21,10 +22,20 @@ public interface WeatherResponseMapper {
     @Mapping(target = "windDirection", source = "wind.deg")
     @Mapping(target = "windGust", source = "wind.gust")
     @Mapping(target = "cloudiness", source = "clouds.cloudiness")
-    @Mapping(target = "curTime", source = "dateTime", qualifiedByName = "curTime")
+    @Mapping(target = "curTime", source = "dateTime", qualifiedByName = "time")
     @Mapping(target = "sunrise", source = "sys", qualifiedByName = "sunrise")
     @Mapping(target = "sunset", source = "sys", qualifiedByName = "sunset")
     WeatherResponse fromWeatherApiResponse(WeatherApiResponse weatherApiResponse);
+
+    @Mapping(target = "description", source = "weatherList", qualifiedByName = "description")
+    @Mapping(target = "weatherCondition", source = "weatherList", qualifiedByName = "weatherCondition")
+    @Mapping(target = "time", source = "dateTime", qualifiedByName = "time")
+    @Mapping(target = "timeOfDay", source = "dateTime", qualifiedByName = "timeOfDay")
+    @Mapping(target = "temperature", source = "main.temperature")
+    HourlyForecastResponse getHourlyForecast(ForecastApiResponse.HourlyForecast hourlyForecast);
+    List<HourlyForecastResponse> getHourlyForecasts(List<ForecastApiResponse.HourlyForecast> hourlyForecasts);
+
+
     @Named("description")
     default String description(List<Weather> weatherList) {
         return weatherList.get(0).getDescription();
@@ -37,8 +48,8 @@ public interface WeatherResponseMapper {
     default TimeOfDay timeOfDay(LocalDateTime dateTime) {
         return TimeOfDay.getTimeOfDayForTime(dateTime);
     }
-    @Named("curTime")
-    default LocalTime curTime(LocalDateTime dateTime) {
+    @Named("time")
+    default LocalTime time(LocalDateTime dateTime) {
         return dateTime.toLocalTime();
     }
     @Named("sunset")

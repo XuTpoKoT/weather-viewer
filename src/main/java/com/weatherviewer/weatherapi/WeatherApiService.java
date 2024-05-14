@@ -46,6 +46,18 @@ public class WeatherApiService {
         }
     }
 
+    public ForecastApiResponse getForecastForLocation(Location location) {
+        try {
+            URI uri = buildUriForForecastRequest(location);
+            HttpRequest request = buildRequest(uri);
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return objectMapper.readValue(response.body(), ForecastApiResponse.class);
+        } catch (Exception e) {
+            throw new GetForecastException("Issues with calling api for location with id = " + location.getId());
+        }
+    }
+
     private static HttpRequest buildRequest(URI uri) {
         return HttpRequest.newBuilder(uri)
                 .GET()
@@ -60,6 +72,13 @@ public class WeatherApiService {
 
     private static URI buildUriForWeatherRequest(Location location) {
         return URI.create(BASE_API_URL + WEATHER_API_URL_SUFFIX
+                + "?lat=" + location.getLatitude()
+                + "&lon=" + location.getLongitude()
+                + "&appid=" + APP_ID
+                + "&units=" + "metric");
+    }
+    private static URI buildUriForForecastRequest(Location location) {
+        return URI.create(BASE_API_URL + FORECAST_API_URL_SUFFIX
                 + "?lat=" + location.getLatitude()
                 + "&lon=" + location.getLongitude()
                 + "&appid=" + APP_ID
