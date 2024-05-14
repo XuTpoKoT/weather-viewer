@@ -2,6 +2,7 @@ package com.weatherviewer.config;
 
 import com.weatherviewer.auth.AuthenticationFilter;
 import org.springframework.context.annotation.*;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
@@ -15,6 +16,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
 @EnableWebMvc
+@EnableScheduling
 @Import(SpringDataConfig.class)
 @ComponentScan({"com.weatherviewer"})
 @PropertySource("classpath:application.properties")
