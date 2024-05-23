@@ -2,7 +2,7 @@ package com.weatherviewer.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.postgresql.Driver;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +16,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
-@Log
+@Slf4j
 @Configuration
 @EnableJpaRepositories(basePackages = "com.weatherviewer")
 @PropertySource("classpath:application.properties")
