@@ -7,8 +7,6 @@ import java.time.LocalTime;
 
 @Builder
 public record WeatherResponse(
-    WeatherCondition weatherCondition,
-    TimeOfDay timeOfDay,
     String description,
     Double temperature,
     Double temperatureFeelsLike,
@@ -21,5 +19,6 @@ public record WeatherResponse(
     Double windGust,
     Integer cloudiness,
     LocalTime sunrise,
-    LocalTime sunset) {
+    LocalTime sunset,
+    String iconUrl) {
 }

@@ -25,7 +25,7 @@ import java.util.UUID;
 public class ForecastController {
     private final WeatherApiService weatherApiService;
     private final LocationRepo locationRepo;
-    private final WeatherMapper weatherMapper = Mappers.getMapper(WeatherMapper.class);
+    private final HourlyForecastMapper hourlyForecastMapper = Mappers.getMapper(HourlyForecastMapper.class);
     private final DailyForecastMapper dailyForecastMapper = new DailyForecastMapper();
     @GetMapping
     public String getForecast(HttpSession session, @RequestParam("locationId") UUID locationId, Model model) {
@@ -35,7 +35,7 @@ public class ForecastController {
                 .orElseThrow(() -> new LocationNotFoundException("Location: " + locationId + " is not found"));
 
         ForecastApiResponse forecastForLocation = weatherApiService.getForecastForLocation(location);
-        List<ForecastForHour> hourlyForecast = weatherMapper.getHourlyForecast(forecastForLocation.getForecasts());
+        List<ForecastForHour> hourlyForecast = hourlyForecastMapper.getHourlyForecast(forecastForLocation.getForecasts());
         List<ForecastForDay> dailyForecast = dailyForecastMapper.getDailyForecast(forecastForLocation.getForecasts());
 
         model.addAttribute("locationName", location.getName());

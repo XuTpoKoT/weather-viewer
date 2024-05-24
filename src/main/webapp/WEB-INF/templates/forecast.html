@@ -22,7 +22,7 @@
                     <h4 class="card-title" th:text="${#temporals.format(forecast.time, 'HH:mm')}"></h4>
                     <h2 class="text-primary card-title"
                         th:text="${#numbers.formatDecimal(forecast.temperature, 1, 2)} + '°C'"></h2>
-                    <img th:src="@{'/img/' + ${forecast.weatherCondition} + '-' + ${forecast.timeOfDay} + '.svg'}">
+                    <img th:src="${forecast.iconUrl()}">
                     <p class="lead card-text mt-auto" th:text="${#strings.capitalize(forecast.description)}"></p>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                     <h4 class="card-title" th:text="${#temporals.format(forecast.date, 'dd-MMM')}">Today</h4>
                     <h2 class="text-primary card-title"
                         th:text="${#numbers.formatDecimal(forecast.temperature, 1, 1)} + '°C'"></h2>
-                    <img th:src="@{'/img/' + ${forecast.weatherCondition} + '-' + ${forecast.timeOfDay} + '.svg'}">
+                    <img th:src="${forecast.iconUrl()}">
                     <p class="lead card-text mt-auto"
                        th:text="${#strings.capitalize(forecast.weatherCondition)}"></p>
                 </div>

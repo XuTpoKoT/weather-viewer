@@ -38,7 +38,7 @@ public class MainController {
 
             for (Location location : userLocations) {
                 WeatherApiResponse weatherApiResponse = weatherApiService.getWeatherForLocation(location);
-                locationWeatherMap.put(location, weatherMapper.fromWeatherApiResponse(weatherApiResponse));
+                locationWeatherMap.put(location, weatherMapper.getWeatherResponse(weatherApiResponse));
             }
 
             model.addAttribute("locationWeatherMap", locationWeatherMap);

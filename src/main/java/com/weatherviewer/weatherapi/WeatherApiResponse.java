@@ -3,6 +3,10 @@ package com.weatherviewer.weatherapi;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.weatherviewer.weatherapi.model.Clouds;
+import com.weatherviewer.weatherapi.model.Main;
+import com.weatherviewer.weatherapi.model.Weather;
+import com.weatherviewer.weatherapi.model.Wind;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -35,5 +39,9 @@ public class WeatherApiResponse {
                 @JsonProperty("sunset")
                 @JsonDeserialize(using = UnixTimestampDeserializer.class)
                 private LocalDateTime sunsetTime;
+        }
+
+        public String getIconUrl() {
+                return "https://openweathermap.org/img/wn/" + weatherList.get(0).getIcon() + "@4x.png";
         }
 }

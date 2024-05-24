@@ -47,11 +47,12 @@
                         </div>
                     </div>
                     <!--описание-->
+
                     <div class="container">
                         <div class="row mb-2">
                             <div class="col-md-6 text-start align-self-center">
                                 <img alt="weather-image" class="card-img-top"
-                                     th:src="@{'/img/' + ${item.value.weatherCondition} + '-' + ${item.value.timeOfDay} + '.svg'}">
+                                     th:src="${item.value.iconUrl()}">
                             </div>
                             <div class="col-md-6 text-end align-self-center">
                                 <h1 class="text-primary" th:text="${item.value.temperature} + '°C'"></h1>

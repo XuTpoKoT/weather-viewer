@@ -7,9 +7,8 @@ import java.time.LocalTime;
 
 @Builder
 public record ForecastForHour(
-    WeatherCondition weatherCondition,
-    TimeOfDay timeOfDay,
     String description,
     Double temperature,
-    LocalTime time) {
+    LocalTime time,
+    String iconUrl) {
 }
