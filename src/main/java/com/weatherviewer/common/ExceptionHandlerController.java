@@ -1,10 +1,13 @@
 package com.weatherviewer.common;
 
+import com.weatherviewer.auth.BadCredentialsException;
 import com.weatherviewer.auth.SignUpFailedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 @Slf4j
 @ControllerAdvice
 public class ExceptionHandlerController {
@@ -20,5 +23,12 @@ public class ExceptionHandlerController {
         log.info(ex.getMessage());
         model.addAttribute("error", ex.getMessage());
         return "error";
+    }
+
+    @ExceptionHandler(value = {BadCredentialsException.class})
+    public String badCredentialsException(RedirectAttributes redirectAttributes) {
+        log.info("bad credentials");
+        redirectAttributes.addAttribute("error", "bad credentials");
+        return "redirect:/sign-in";
     }
 }

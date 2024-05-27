@@ -32,8 +32,8 @@ public class AuthController {
     }
 
     @PostMapping("/sign-up")
-    public String signUp(@Valid @ModelAttribute("signUpReq") SignUpRequest req, BindingResult bindingResult,
-                         HttpSession httpSession) {
+    public String signUp(@Valid @ModelAttribute("signUpReq") SignUpRequest req,
+                         BindingResult bindingResult, HttpSession httpSession) {
         log.info("signUp called with login " + req.login());
         if (bindingResult.hasErrors()) {
             return "sign-up";

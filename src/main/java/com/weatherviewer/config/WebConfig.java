@@ -31,7 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticationFilter)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/", "/sign-in", "sign-up");
+                .excludePathPatterns("/", "/sign-in", "/sign-up");
     }
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
