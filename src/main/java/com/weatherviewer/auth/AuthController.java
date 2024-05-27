@@ -67,7 +67,13 @@ public class AuthController {
 
     @PostMapping("/sign-out")
     public String signOut(HttpSession httpSession) {
-        authService.signOut(UUID.fromString(httpSession.getAttribute("sessionId").toString()));
+        if (httpSession.getAttribute("sessionId") == null) {
+            log.info("No session id for sign out");
+            return "redirect:/";
+        }
+
+        UUID sessionId = UUID.fromString(httpSession.getAttribute("sessionId").toString());
+        authService.signOut(sessionId);
         httpSession.removeAttribute("sessionId");
         httpSession.removeAttribute("login");
         log.info("SignOut is successful");

@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.time.LocalDate;
 
 @Builder
-public record ForecastForDay(
+public record ForecastForDayDto(
     WeatherCondition weatherCondition,
     Double temperature,
     LocalDate date,

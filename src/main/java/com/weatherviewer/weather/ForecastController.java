@@ -35,8 +35,8 @@ public class ForecastController {
                 .orElseThrow(() -> new LocationNotFoundException("Location: " + locationId + " is not found"));
 
         ForecastApiResponse forecastForLocation = weatherApiService.getForecastForLocation(location);
-        List<ForecastForHour> hourlyForecast = hourlyForecastMapper.getHourlyForecast(forecastForLocation.getForecasts());
-        List<ForecastForDay> dailyForecast = dailyForecastMapper.getDailyForecast(forecastForLocation.getForecasts());
+        List<ForecastForHourDto> hourlyForecast = hourlyForecastMapper.getHourlyForecast(forecastForLocation.getForecasts());
+        List<ForecastForDayDto> dailyForecast = dailyForecastMapper.getDailyForecast(forecastForLocation.getForecasts());
 
         model.addAttribute("locationName", location.getName());
         model.addAttribute("hourlyForecast", hourlyForecast);

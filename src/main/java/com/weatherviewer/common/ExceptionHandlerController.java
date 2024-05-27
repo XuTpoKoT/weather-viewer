@@ -11,14 +11,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(value = {RuntimeException.class})
     public String unknownError(RuntimeException ex, Model model) {
         log.error("Unknown error", ex);
-        model.addAttribute("error", ex.getMessage());
-        return "error";
-    }
-
-    @ExceptionHandler(value = {DBException.class})
-    public String dbException(RuntimeException ex, Model model) {
-        log.error("DBException", ex);
-        model.addAttribute("error", ex.getMessage());
+        model.addAttribute("error", "Unknown error");
         return "error";
     }
 

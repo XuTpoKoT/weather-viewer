@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DailyForecastMapper {
-    public List<ForecastForDay> getDailyForecast(List<ForecastApiResponse.ForecastForHour> forecastForHours) {
-        List<ForecastForDay>  dailyForecasts = new ArrayList<>();
+    public List<ForecastForDayDto> getDailyForecast(List<ForecastApiResponse.ForecastForHour> forecastForHours) {
+        List<ForecastForDayDto>  dailyForecasts = new ArrayList<>();
 
         LocalDate currentDay = LocalDate.from(forecastForHours.get(0).getDateTime());
         LocalDate lastDay = LocalDate.from(forecastForHours.get(forecastForHours.size() - 1).getDateTime());
@@ -23,14 +23,14 @@ public class DailyForecastMapper {
 
         return dailyForecasts;
     }
-    private ForecastForDay getForecastForDay(LocalDate date, List<ForecastApiResponse.ForecastForHour>
+    private ForecastForDayDto getForecastForDay(LocalDate date, List<ForecastApiResponse.ForecastForHour>
             hourlyForecast) {
         List<ForecastApiResponse.ForecastForHour> hourlyForecastForDay = hourlyForecast
                 .stream()
                 .filter(forecast -> forecast.getDateTime().toLocalDate().isEqual(date))
                 .toList();
 
-        return ForecastForDay.builder()
+        return ForecastForDayDto.builder()
                 .date(date)
                 .temperature(getAvgTemperature(hourlyForecastForDay))
                 .weatherCondition(getAvgWeather(hourlyForecastForDay))

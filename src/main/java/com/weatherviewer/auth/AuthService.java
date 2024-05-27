@@ -2,7 +2,6 @@ package com.weatherviewer.auth;
 
 import com.password4j.Hash;
 import com.password4j.Password;
-import com.weatherviewer.common.DBException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -34,27 +33,21 @@ public class AuthService {
             return session.getId();
         } catch (DataIntegrityViolationException e) {
             throw new SignUpFailedException("Login " + login + " is occupied");
-        } catch (RuntimeException e) {
-            throw new DBException(e);
         }
     }
 
     @Transactional
     public UUID signIn(String login, String password) {
-        try {
-            User user = userRepo.findByLogin(login).orElseThrow(BadCredentialsException::new);
-            if (!Password.check(password, user.getPassword()).withBcrypt()) {
-                throw new BadCredentialsException();
-            }
-
-            Session session = new Session(user, LocalDateTime.now().plusHours(1));
-            sessionRepo.save(session);
-            log.info("Session " + session.getId() + " created");
-
-            return session.getId();
-        } catch (RuntimeException e) {
-            throw new DBException(e);
+        User user = userRepo.findByLogin(login).orElseThrow(BadCredentialsException::new);
+        if (!Password.check(password, user.getPassword()).withBcrypt()) {
+            throw new BadCredentialsException();
         }
+
+        Session session = new Session(user, LocalDateTime.now().plusHours(1));
+        sessionRepo.save(session);
+        log.info("Session " + session.getId() + " created");
+
+        return session.getId();
     }
 
     public void signOut(UUID sessionId) {

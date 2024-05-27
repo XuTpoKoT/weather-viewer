@@ -15,5 +15,5 @@ public interface WeatherMapper {
     @Mapping(target = "cloudiness", source = "clouds.cloudiness")
     @Mapping(target = "sunrise", source = "sys", qualifiedByName = "sunrise")
     @Mapping(target = "sunset", source = "sys", qualifiedByName = "sunset")
-    WeatherResponse getWeatherResponse(WeatherApiResponse weatherApiResponse);
+    WeatherDto getWeatherResponse(WeatherApiResponse weatherApiResponse);
 }

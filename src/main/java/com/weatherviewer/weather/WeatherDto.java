@@ -6,7 +6,7 @@ import java.time.LocalTime;
 
 
 @Builder
-public record WeatherResponse(
+public record WeatherDto(
     String description,
     Double temperature,
     Double temperatureFeelsLike,

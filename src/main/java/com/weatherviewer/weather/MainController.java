@@ -34,7 +34,7 @@ public class MainController {
             List<Location> userLocations = locationRepo.findByUsersLogin(login);
 
             log.info("Finding current weather for user locations");
-            Map<Location, WeatherResponse> locationWeatherMap = new HashMap<>();
+            Map<Location, WeatherDto> locationWeatherMap = new HashMap<>();
 
             for (Location location : userLocations) {
                 WeatherApiResponse weatherApiResponse = weatherApiService.getWeatherForLocation(location);

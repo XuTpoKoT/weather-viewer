@@ -6,7 +6,7 @@ import java.time.LocalTime;
 
 
 @Builder
-public record ForecastForHour(
+public record ForecastForHourDto(
     String description,
     Double temperature,
     LocalTime time,

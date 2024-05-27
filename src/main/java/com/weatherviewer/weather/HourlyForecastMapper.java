@@ -12,6 +12,6 @@ public interface HourlyForecastMapper {
     @Mapping(target = "iconUrl", source = "iconUrl")
     @Mapping(target = "time", source = "dateTime", qualifiedByName = "time")
     @Mapping(target = "temperature", source = "main.temperature")
-    ForecastForHour getForecastForHour(ForecastApiResponse.ForecastForHour forecastForHour);
-    List<ForecastForHour> getHourlyForecast(List<ForecastApiResponse.ForecastForHour> forecastForHours);
+    ForecastForHourDto getForecastForHour(ForecastApiResponse.ForecastForHour forecastForHour);
+    List<ForecastForHourDto> getHourlyForecast(List<ForecastApiResponse.ForecastForHour> forecastForHours);
 }
