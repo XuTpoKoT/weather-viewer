@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.weatherviewer.locations.GetLocationsException;
 import com.weatherviewer.locations.Location;
 import com.weatherviewer.locations.LocationsResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -14,8 +16,9 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 @Service
+@Slf4j
 public class WeatherApiService {
-    private static final String APP_ID = "065bf3f59bdaa205695e6669353d7c22";
+    private String WEATHER_API_KEY = "065bf3f59bdaa205695e6669353d7c22";
     private static final String BASE_API_URL = "https://api.openweathermap.org";
     private static final String LOCATIONS_API_URL_SUFFIX = "/geo/1.0/direct";
     private static final String WEATHER_API_URL_SUFFIX = "/data/2.5/weather";
@@ -28,8 +31,11 @@ public class WeatherApiService {
             URI uri = buildUriForGetLocationsRequest(locationName);
             HttpRequest request = buildRequest(uri);
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                throw new GetLocationsException("Error with open weather service");
+            }
             return objectMapper.readValue(response.body(), new TypeReference<>() {});
-        } catch (Exception e) {
+        } catch (IOException | InterruptedException e) {
             throw new GetLocationsException("Can not get locations for name = " + locationName, e);
         }
     }
@@ -39,9 +45,11 @@ public class WeatherApiService {
             URI uri = buildUriForWeatherRequest(location);
             HttpRequest request = buildRequest(uri);
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
+            if (response.statusCode() != 200) {
+                throw new GetWeatherException("Error with open weather service");
+            }
             return objectMapper.readValue(response.body(), WeatherApiResponse.class);
-        } catch (Exception e) {
+        } catch (IOException | InterruptedException e) {
             throw new GetWeatherException("Can not get weather for location with id = " + location.getId());
         }
     }
@@ -51,37 +59,39 @@ public class WeatherApiService {
             URI uri = buildUriForForecastRequest(location);
             HttpRequest request = buildRequest(uri);
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
+            if (response.statusCode() != 200) {
+                throw new GetForecastException("Error with open weather service");
+            }
             return objectMapper.readValue(response.body(), ForecastApiResponse.class);
-        } catch (Exception e) {
+        } catch (IOException | InterruptedException e) {
             throw new GetForecastException("Issues with calling api for location with id = " + location.getId());
         }
     }
 
-    private static HttpRequest buildRequest(URI uri) {
+    private HttpRequest buildRequest(URI uri) {
         return HttpRequest.newBuilder(uri)
                 .GET()
                 .build();
     }
-    private static URI buildUriForGetLocationsRequest(String locationName) {
+    private URI buildUriForGetLocationsRequest(String locationName) {
         return URI.create(BASE_API_URL + LOCATIONS_API_URL_SUFFIX
                 + "?q=" + locationName
                 + "&limit=5"
-                + "&appid=" + APP_ID);
+                + "&appid=" + WEATHER_API_KEY);
     }
 
-    private static URI buildUriForWeatherRequest(Location location) {
+    private URI buildUriForWeatherRequest(Location location) {
         return URI.create(BASE_API_URL + WEATHER_API_URL_SUFFIX
                 + "?lat=" + location.getLatitude()
                 + "&lon=" + location.getLongitude()
-                + "&appid=" + APP_ID
+                + "&appid=" + WEATHER_API_KEY
                 + "&units=" + "metric");
     }
-    private static URI buildUriForForecastRequest(Location location) {
+    private URI buildUriForForecastRequest(Location location) {
         return URI.create(BASE_API_URL + FORECAST_API_URL_SUFFIX
                 + "?lat=" + location.getLatitude()
                 + "&lon=" + location.getLongitude()
-                + "&appid=" + APP_ID
+                + "&appid=" + WEATHER_API_KEY
                 + "&units=" + "metric");
     }
 }

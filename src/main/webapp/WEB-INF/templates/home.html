@@ -141,6 +141,14 @@
         <p class="fw-bold">Location Required for Weather Information</p>
         <p>Please add a location to view weather. You can do it by using the search bar above.</p>
     </div>
+
+    <div th:if="${error}" class="container justify-content-center align-items-center d-flex vh-100">
+        <div class="alert alert-danger d-flex" role="alert">
+            <p class="m-0">
+                <b th:text="${error}"></b>
+            </p>
+        </div>
+    </div>
 </div>
 <div th:replace="~{_footer}"></div>
 <script crossorigin="anonymous" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

@@ -2,6 +2,9 @@ package com.weatherviewer.common;
 
 import com.weatherviewer.auth.BadCredentialsException;
 import com.weatherviewer.auth.SignUpFailedException;
+import com.weatherviewer.locations.GetLocationsException;
+import com.weatherviewer.weatherapi.GetForecastException;
+import com.weatherviewer.weatherapi.GetWeatherException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,6 +19,13 @@ public class ExceptionHandlerController {
         log.error("Unknown error", ex);
         model.addAttribute("error", "Unknown error");
         return "error";
+    }
+
+    @ExceptionHandler(value = {GetLocationsException.class, GetForecastException.class, GetWeatherException.class})
+    public String weatherApiError(RuntimeException ex, Model model) {
+        log.error(ex.getMessage(), ex);
+        model.addAttribute("error", ex.getMessage());
+        return "home";
     }
 
     @ExceptionHandler(value = {SignUpFailedException.class})
