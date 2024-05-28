@@ -16,8 +16,8 @@ public class SessionDeletingService {
         this.sessionRepo = sessionRepo;
     }
 
-    @Scheduled(timeUnit = TimeUnit.MINUTES, fixedRate = 2)
-    public void myTask() {
+    @Scheduled(timeUnit = TimeUnit.MINUTES, fixedRateString = "${session.clean-interval-in-minutes}")
+    public void deleteExpiredSessions() {
         log.info("Deleting expired sessions");
         sessionRepo.deleteSessionsByExpiresAtLessThan(LocalDateTime.now());
     }

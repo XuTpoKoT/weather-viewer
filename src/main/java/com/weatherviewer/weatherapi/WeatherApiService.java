@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.weatherviewer.locations.GetLocationsException;
 import com.weatherviewer.locations.Location;
 import com.weatherviewer.locations.LocationsResponse;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,9 +16,9 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 @Service
-@Slf4j
 public class WeatherApiService {
-    private String WEATHER_API_KEY = "065bf3f59bdaa205695e6669353d7c22";
+    @Value("${open-weather-key}")
+    private String OPEN_WEATHER_KEY;
     private static final String BASE_API_URL = "https://api.openweathermap.org";
     private static final String LOCATIONS_API_URL_SUFFIX = "/geo/1.0/direct";
     private static final String WEATHER_API_URL_SUFFIX = "/data/2.5/weather";
@@ -77,21 +77,21 @@ public class WeatherApiService {
         return URI.create(BASE_API_URL + LOCATIONS_API_URL_SUFFIX
                 + "?q=" + locationName
                 + "&limit=5"
-                + "&appid=" + WEATHER_API_KEY);
+                + "&appid=" + OPEN_WEATHER_KEY);
     }
 
     private URI buildUriForWeatherRequest(Location location) {
         return URI.create(BASE_API_URL + WEATHER_API_URL_SUFFIX
                 + "?lat=" + location.getLatitude()
                 + "&lon=" + location.getLongitude()
-                + "&appid=" + WEATHER_API_KEY
+                + "&appid=" + OPEN_WEATHER_KEY
                 + "&units=" + "metric");
     }
     private URI buildUriForForecastRequest(Location location) {
         return URI.create(BASE_API_URL + FORECAST_API_URL_SUFFIX
                 + "?lat=" + location.getLatitude()
                 + "&lon=" + location.getLongitude()
-                + "&appid=" + WEATHER_API_KEY
+                + "&appid=" + OPEN_WEATHER_KEY
                 + "&units=" + "metric");
     }
 }

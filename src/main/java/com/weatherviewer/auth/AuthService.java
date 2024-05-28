@@ -4,6 +4,7 @@ import com.password4j.Hash;
 import com.password4j.Password;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+    @Value("${session.duration-in-hours}")
+    private long sessionDurationInHours;
     private final UserRepo userRepo;
     private final SessionRepo sessionRepo;
     @Transactional
@@ -26,7 +29,7 @@ public class AuthService {
             userRepo.save(user);
             log.info("User " + login + " created");
 
-            Session session = new Session(user, LocalDateTime.now().plusHours(1));
+            Session session = new Session(user, LocalDateTime.now().plusHours(sessionDurationInHours));
             sessionRepo.save(session);
             log.info("Session " + session.getId() + " created");
 
@@ -43,7 +46,7 @@ public class AuthService {
             throw new BadCredentialsException();
         }
 
-        Session session = new Session(user, LocalDateTime.now().plusHours(1));
+        Session session = new Session(user, LocalDateTime.now().plusHours(sessionDurationInHours));
         sessionRepo.save(session);
         log.info("Session " + session.getId() + " created");
 
