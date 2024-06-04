@@ -2,6 +2,7 @@
 ## Содержание
 - [Описание](#desc)
 - [Технологический стек](#frameworks)
+- [Деплой](#deploy)
 - [Как запустить локально](#run)
 
 <a name="desc"></a>
@@ -17,25 +18,23 @@
 - Java
 - Gradle
 - Spring Framework (MVC, Data)
+- Tomcat
 - Thymeleaf
 - PostgreSQL
 - Flyway
 - Lombok
 - Jackson
 - Mapstruct
-   
+
+<a name="deploy"></a>
+## Деплой
+Приложение доступно по адресу http://213.226.126.69:8082/weather-viewer-1.0.
+
 <a name="run"></a>
 ## Как запустить локально
-Поднимаем контейнер с БД.
+1. Установите переменные OPEN_WEATHER_KEY и API_PORT в .env файле.
+2. Запустите контейнер с приложением:
 ```
 docker compose up -d
 ```
-Накатываем миграции.
-```
-./gradlew flywayMigrate
-```
-Собираем war.
-```
-./gradlew war
-```
-Далее деплоим war в Tomcat.
+Приложение будет доступно по url http://localhost:API_PORT/weather-viewer-1.0/
