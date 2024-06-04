@@ -1,21 +1,10 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'org.flywaydb:flyway-database-postgresql:10.4.1'
-    }
-}
-
 plugins {
     id 'java'
-    id "org.flywaydb.flyway" version "10.4.1"
     id 'war'
 }
 
 group = 'com.weather'
-version = '1.0-SNAPSHOT'
+version = '1.0'
 
 repositories {
     mavenCentral()
@@ -56,15 +45,6 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
-
-flyway {
-    cleanDisabled = false
-    url = 'jdbc:postgresql://localhost:5432/weather_db'
-    user = 'dev_user'
-    password = 'dev_pass'
-    locations = ['classpath:migration']
-}
-flywayMigrate.dependsOn classes
 
 java {
     toolchain {
