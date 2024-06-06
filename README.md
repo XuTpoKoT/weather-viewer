@@ -4,6 +4,7 @@
 - [Технологический стек](#frameworks)
 - [Деплой](#deploy)
 - [Как запустить локально](#run)
+- [Дизайн](#design)
 
 <a name="desc"></a>
 ## Описание
@@ -37,4 +38,12 @@
 ```
 docker compose up -d
 ```
-Приложение будет доступно по url http://localhost:API_PORT/weather-viewer-1.0/
+Приложение будет доступно по адресу http://localhost:API_PORT/weather-viewer-1.0/
+
+<a name="design"></a>
+## Дизайн
+![auth](./img/auth.png)
+
+![main](./img/main.png)
+
+![forecast](./img/forecast.png)
