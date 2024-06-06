@@ -9,15 +9,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "Locations", schema = "public")
+@Getter
 public class Location {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter
     private UUID id;
-    @Getter
     private String name;
-    @Getter
     private Double latitude;
-    @Getter
     private Double longitude;
 
     public Location(String name, Double latitude, Double longitude) {
