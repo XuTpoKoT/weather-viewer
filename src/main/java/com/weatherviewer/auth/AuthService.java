@@ -39,7 +39,6 @@ public class AuthService {
         }
     }
 
-    @Transactional
     public UUID signIn(String login, String password) {
         User user = userRepo.findByLogin(login).orElseThrow(BadCredentialsException::new);
         if (!Password.check(password, user.getPassword()).withBcrypt()) {
