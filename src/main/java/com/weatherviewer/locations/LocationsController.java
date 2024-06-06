@@ -3,6 +3,7 @@ package com.weatherviewer.locations;
 import com.weatherviewer.auth.AccessForbiddenException;
 import com.weatherviewer.auth.Session;
 import com.weatherviewer.auth.SessionRepo;
+import com.weatherviewer.auth.User;
 import com.weatherviewer.weatherapi.WeatherApiService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.UUID;
 public class LocationsController {
     private final WeatherApiService weatherApiService;
     private final LocationRepo locationRepo;
+    private final UserLocationRepo userLocationRepo;
     private final SessionRepo sessionRepo;
 
     @GetMapping("/locations")
@@ -38,22 +40,26 @@ public class LocationsController {
         String sessionId = httpSession.getAttribute("sessionId").toString();
         log.info("addLocation called, session id: " + sessionId + ", location: " + req.name());
 
-        Session session = sessionRepo.findById(UUID.fromString(sessionId)).orElseThrow(AccessForbiddenException::new);
-        Location location = new Location(req.name(), List.of(session.getUser()), req.latitude(), req.longitude());
+        Location location = new Location(req.name(), req.latitude(), req.longitude());
+        locationRepo.saveOrIgnore(location);
 
-        log.info("saving location to db...");
-        locationRepo.save(location);
+        Session session = sessionRepo.findWithUser(UUID.fromString(sessionId)).orElseThrow(AccessForbiddenException::new);
+        User user = session.getUser();
+        log.info("saving user_location to db...");
+        userLocationRepo.save(new UserLocation(user.getId(), req.latitude(), req.longitude()));
 
         return "redirect:/";
     }
 
     @DeleteMapping("/locations")
-    public String deleteLocation(@RequestParam("locationId") UUID locationId,
-                              HttpSession httpSession) {
+    public String deleteLocation(@RequestParam("latitude") Double latitude, @RequestParam("longitude") Double longitude,
+                                 HttpSession httpSession) {
         String sessionId = httpSession.getAttribute("sessionId").toString();
         log.info("deleteLocation called, session id: " + sessionId);
 
-        locationRepo.deleteById(locationId);
+        Session session = sessionRepo.findWithUser(UUID.fromString(sessionId)).orElseThrow(AccessForbiddenException::new);
+        User user = session.getUser();
+        userLocationRepo.deleteByUserIdAndLatitudeAndLongitude(user.getId(), latitude, longitude);
 
         return "redirect:/";
     }
