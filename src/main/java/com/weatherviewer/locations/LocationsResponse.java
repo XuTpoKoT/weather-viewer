@@ -12,5 +12,7 @@ public record LocationsResponse(
         @JsonProperty("lon")
         Double longitude,
         @JsonProperty("country")
-        String country) {
+        String country,
+        @JsonProperty("state")
+        String state) {
 }
