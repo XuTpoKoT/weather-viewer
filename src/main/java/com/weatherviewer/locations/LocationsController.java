@@ -28,6 +28,10 @@ public class LocationsController {
     public String getLocationsByName(@RequestParam("q") String locationName, HttpSession httpSession, Model model) {
         log.info("getLocationsByName called, session " + httpSession.getAttribute("sessionId") + ", location "
                 + locationName);
+        if (!LocationNameValidator.isValid(locationName)){
+            model.addAttribute("error", "Location name must be a word");
+            return "error";
+        }
 
         List<LocationsResponse> locations = weatherApiService.getLocationsByName(locationName);
         model.addAttribute("locations", locations);
@@ -35,8 +39,7 @@ public class LocationsController {
     }
 
     @PostMapping("/locations")
-    public String addLocation(@ModelAttribute("addLocationRequest") AddLocationRequest req,
-                              HttpSession httpSession) {
+    public String addLocation(@ModelAttribute("addLocationRequest") AddLocationRequest req, HttpSession httpSession) {
         String sessionId = httpSession.getAttribute("sessionId").toString();
         log.info("addLocation called, session id: " + sessionId + ", location: " + req.name());
 
