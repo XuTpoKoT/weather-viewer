@@ -8,7 +8,9 @@ import java.util.UUID;
 
 @NoArgsConstructor
 @Entity
-@Table(name = "Locations", schema = "public")
+@Table(name = "Locations"
+        , schema = "public"
+        , uniqueConstraints=@UniqueConstraint(columnNames={"latitude", "longitude"}))
 @Getter
 public class Location {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)

@@ -7,7 +7,9 @@ import java.util.UUID;
 
 @NoArgsConstructor
 @Entity
-@Table(name = "User_Location", schema = "public")
+@Table(name = "User_Location"
+        , schema = "public"
+        , uniqueConstraints=@UniqueConstraint(columnNames={"user_id", "latitude", "longitude"}))
 public class UserLocation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
